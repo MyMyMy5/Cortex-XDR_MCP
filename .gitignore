@@ -1,0 +1,58 @@
+# ── Secrets & credentials (CRITICAL) ──
+.env
+.env.local
+.env.production
+.env.staging
+# Note: .env.example is NOT ignored — it's a safe template
+
+# ── Test scripts with hardcoded API keys ──
+test_exclusions.ps1
+test_alert.ps1
+test_xql.ps1
+test_trim.ps1
+
+# ── Debug/scratch files with potential PII or API data ──
+Save.json
+body.json
+status.txt
+err.txt
+fields.txt
+keys_out.txt
+xql_result.txt
+extract_keys.py
+exclusions.md
+
+# ── PowerShell error artifacts ──
+$($_.Exception.Response.StatusCode.value__)
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual environments ──
+venv/
+.venv/
+env/
+
+# ── IDE ──
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+
+# ── Poetry ──
+# Include poetry.lock for reproducible builds (don't ignore it)
+
+# ── Kiro ──
+.kiro/

@@ -1,0 +1,25 @@
+Palo Alto Networks Cortex Communication Python Files - License 1.0
+
+1. DEFINITIONS
+“Licensor” means (a) Palo Alto Networks, Inc., if you are located in North or Latin America, (b) Palo Alto Networks (UK) Ltd. If you are located outside of North or Latin America, or (c) Palo Alto Networks Public Sector LLC, if you are a United States federal government entity or organization.
+“Software” means the software made available by Licensor under this License, and any part thereof.
+
+2. LICENSE GRANT
+2.1 Grant. Subject to the Limitations below, Licensor grants to you a perpetual, worldwide, non-exclusive, royalty-free, copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, and distribute the Software, but in each case only for use with the Licensor’s Cortex XSIAM, Cloud, XDR and AgentiX products.
+
+3. LIMITATIONS
+3.1 Redistribution. You may distribute the Software only if (a) you do so under this License, (b) you include a complete copy of this License with your distribution, and (c) you retain without modification any copyright, patent, trademark, or attribution notices that are in the Software.
+
+3.2 Derivative Works. You may specify that additional or different terms apply to the use, reproduction, and distribution of your derivative works of the Software (“Your Terms”) only if (a) Your Terms provide that the use limitation in Section 2.1 applies to your derivative works, and (b) you identify the specific derivative works that are subject to Your Terms. Notwithstanding Your Terms, this License will continue to apply to the Software.
+
+3.3 Patent Claims. If you bring or threaten to bring a patent claim against Licensor or any of its affiliates (including any claim, cross-claim or counterclaim in a lawsuit) to enforce any patents that you allege are infringed by the Software, then all your rights under this License will terminate immediately.
+
+3.4 Trademarks. This License does not grant any rights to use any Licensor’s or its affiliates’ names, logos, or trademarks, except as necessary to reproduce the notices described in this License.
+
+3.5 Termination. If you violate any term of this License, then your rights under this License will terminate immediately.
+
+4. DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED “AS IS” WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WARRANTIES OR CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE OR NON-INFRINGEMENT. YOU BEAR THE RISK OF UNDERTAKING ANY ACTIVITIES UNDER THIS LICENSE. SOME STATES’ CONSUMER LAWS DO NOT ALLOW EXCLUSION OF AN IMPLIED WARRANTY, SO THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+5. LIMITATION OF LIABILITY
+EXCEPT AS PROHIBITED BY APPLICABLE LAW, IN NO EVENT AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE SHALL LICENSOR BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR RELATED TO THIS LICENSE, THE USE OR INABILITY TO USE THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF GOODWILL, BUSINESS INTERRUPTION, LOST PROFITS OR DATA, COMPUTER FAILURE OR MALFUNCTION, OR ANY OTHER COMMERCIAL DAMAGES OR LOSSES), EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.

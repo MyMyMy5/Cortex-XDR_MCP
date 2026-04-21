@@ -4,14 +4,16 @@ An MCP (Model Context Protocol) server that connects AI assistants to Palo Alto 
 
 ## What It Does
 
-This server exposes 25+ Cortex XDR tools via MCP, allowing AI agents to:
+This server exposes 30+ Cortex XDR tools via MCP, allowing AI agents to:
 
 - Investigate incidents and alerts with full event details
 - Hunt for IOCs (domains, IPs, hashes) across the data lake
 - Analyze process trees and causality chains
 - Search file activity, browser connections, and user behavior
+- Collect full browser history from endpoints (with local file export)
 - Run XQL queries against the XDR data lake
 - Manage incidents (comments, assignments, merges)
+- Retrieve files from endpoints and scan for malware
 - Retrieve endpoint details, vulnerabilities, and asset inventory
 
 All API timestamps are automatically converted from epoch milliseconds to human-readable Israel timezone (IDT/IST) for display, while preserving the original values for programmatic use.
@@ -38,12 +40,14 @@ All API timestamps are automatically converted from epoch milliseconds to human-
 | `search_user_activity` | User alert activity (summary + detail modes) |
 | `search_file_activity` | File events (downloads, writes, deletions) |
 | `search_browser_activity` | Browser network connections with proxy detection |
+| `collect_browser_history` | Collect browser history from endpoints via XDR Script Library. Supports `output_file_path` to download the full untruncated dataset to a local file |
 | `get_exclusions` | Alert exclusion audit records |
 | `merge_cases` | Merge duplicate cases |
 | `update_incident_no_resolve` | Add comments, reassign, change severity |
-| `analyse_file` | Upload and scan files via WildFire |
-| `enrich_hash` | Search for SHA256 across process and file events |
-| `search_ioc` | Hunt for domains, IPs, or hashes across all events |
+| `retrieve_file_from_endpoint` | Initiate file retrieval from an endpoint |
+| `get_file_retrieval_details` | Get download link for a retrieved file |
+| `get_action_status` | Check status of response actions (retrieval, scan, etc.) |
+| `scan_endpoints` | Initiate full malware scan on endpoints |
 
 ### OpenAPI Components (auto-generated)
 | Tool | Description |

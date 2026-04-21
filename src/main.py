@@ -9,6 +9,13 @@ The server can operate in different transport modes (stdio, streamable-http) and
 with XSIAM (Extended Security Intelligence and Automation Management) services.
 """
 import os
+import sys
+
+# Ensure the src/ directory is on sys.path so bare imports (config, pkg, usecase, etc.)
+# work regardless of the current working directory or how the script is launched.
+_SRC_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SRC_DIR not in sys.path:
+    sys.path.insert(0, _SRC_DIR)
 
 # Enable advanced FastMCP OpenAPI parser for enhanced API specification processing
 # This must be set before importing FastMCP to ensure the new parser is used for

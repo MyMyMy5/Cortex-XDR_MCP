@@ -12,6 +12,11 @@ import time
 import zipfile
 from typing import Optional
 
+# Ensure the src/ directory is on sys.path so bare imports work from any CWD.
+_SRC_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SRC_DIR not in sys.path:
+    sys.path.insert(0, _SRC_DIR)
+
 import requests
 
 from config.config import get_config, reload_config

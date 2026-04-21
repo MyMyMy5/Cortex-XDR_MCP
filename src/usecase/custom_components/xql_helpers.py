@@ -17,24 +17,30 @@ logger = logging.getLogger(__name__)
 def _to_epoch_ms(value: Union[int, str, None]) -> Optional[int]:
     """Accept epoch ms (int) or ISO 8601 / human-readable string and return epoch ms.
 
-    Supports: epoch ms int, 'YYYY-MM-DD', 'YYYY-MM-DDTHH:MM:SSZ',
-    'YYYY-MM-DDTHH:MM:SS', 'YYYY-MM-DD HH:MM:SS'.
+    Supports: epoch ms int, epoch ms as string (e.g. '1776277687000'),
+    'YYYY-MM-DD', 'YYYY-MM-DDTHH:MM:SSZ', 'YYYY-MM-DDTHH:MM:SS',
+    'YYYY-MM-DD HH:MM:SS'.
     """
     if value is None:
         return None
     if isinstance(value, int):
         return value
-    for fmt in (
-        "%Y-%m-%dT%H:%M:%SZ",
-        "%Y-%m-%dT%H:%M:%S",
-        "%Y-%m-%d %H:%M:%S",
-        "%Y-%m-%d",
-    ):
-        try:
-            dt = datetime.strptime(value.strip(), fmt).replace(tzinfo=timezone.utc)
-            return int(dt.timestamp() * 1000)
-        except ValueError:
-            continue
+    if isinstance(value, str):
+        stripped = value.strip()
+        # Handle epoch ms passed as a string (e.g. "1776277687000")
+        if stripped.isdigit():
+            return int(stripped)
+        for fmt in (
+            "%Y-%m-%dT%H:%M:%SZ",
+            "%Y-%m-%dT%H:%M:%S",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%d",
+        ):
+            try:
+                dt = datetime.strptime(stripped, fmt).replace(tzinfo=timezone.utc)
+                return int(dt.timestamp() * 1000)
+            except ValueError:
+                continue
     raise ValueError(
         f"Cannot parse timeframe value: {value!r}. "
         "Use epoch ms or ISO 8601 (e.g. '2024-01-15T00:00:00Z' or '2024-01-15')."

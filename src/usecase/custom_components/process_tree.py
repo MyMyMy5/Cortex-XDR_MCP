@@ -91,25 +91,43 @@ async def get_process_tree(
         events = alert.get("events", [])
         causality_process_name = None
         causality_cmd = None
+        causality_id = None
         actor_pid = None
         for event in events:
             causality_process_name = event.get("causality_actor_process_image_name")
             causality_cmd = event.get("causality_actor_process_command_line")
+            # Try multiple field names — the API uses different names in different contexts
+            causality_id = (
+                event.get("actor_process_causality_id")
+                or event.get("causality_actor_process_instance_id")
+            )
             actor_pid = event.get("actor_process_os_pid")
             if causality_process_name:
                 break
 
-        # Step 2: Query all PROCESS events on this agent around the alert timeframe
-        # We use the actor_process_causality_id to find all processes in the same chain.
-        # Since we can't easily get the causality_id from the alert API, we query by
-        # agent_id + PROCESS events and filter to the relevant causality chain.
+        # Step 2: Query PROCESS events filtered by causality chain when possible.
+        # If we have a causality_id, filter to only processes in the same chain —
+        # this eliminates noise from unrelated processes on the same endpoint.
+        # Fall back to agent_id-only filtering if causality_id is unavailable.
+        if causality_id:
+            process_filter = (
+                f'agent_id = "{agent_id}" and event_type = PROCESS '
+                f'and actor_process_causality_id = "{causality_id}"'
+            )
+        else:
+            logger.warning(
+                f"No causality_id found for alert {alert_id} — "
+                f"falling back to agent-wide PROCESS query"
+            )
+            process_filter = f'agent_id = "{agent_id}" and event_type = PROCESS'
+
         query = (
             f'dataset = xdr_data '
-            f'| filter agent_id = "{agent_id}" and event_type = PROCESS '
+            f'| filter {process_filter} '
             f'| fields agent_hostname, '
             f'  actor_process_image_name, actor_process_image_path, actor_process_command_line, '
             f'  actor_process_image_sha256, actor_process_signature_status, actor_process_signature_vendor, '
-            f'  actor_process_os_pid, '
+            f'  actor_process_os_pid, actor_process_causality_id, '
             f'  causality_actor_process_image_name, causality_actor_process_command_line, '
             f'  causality_actor_process_image_path, causality_actor_process_image_sha256, '
             f'  os_actor_process_image_name, os_actor_process_command_line, os_actor_process_os_pid, '
@@ -152,6 +170,8 @@ async def get_process_tree(
                 "process_name": causality_process_name,
                 "command_line": causality_cmd,
             },
+            "causality_id": causality_id,
+            "filtered_by_causality": causality_id is not None,
             "total_processes": len(unique_processes),
             "processes": unique_processes,
         }

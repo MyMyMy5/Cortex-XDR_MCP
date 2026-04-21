@@ -131,10 +131,10 @@ async def search_alerts_by_host(
 
         endpoint_ids = [ep["endpoint_id"] for ep in endpoints if ep.get("endpoint_id")]
 
-        # Step 2: Build alert filters
-        filters = [
-            {"field": "endpoint_id_list", "operator": "in", "value": endpoint_ids}
-        ]
+        # Step 2: Build alert filters.
+        # The get_alerts_multi_events API does NOT support endpoint_id_list as a filter.
+        # We apply time/severity filters server-side, then filter by endpoint_id client-side.
+        filters = []
 
         # Time range filters
         if timeframe_from is not None:
@@ -146,37 +146,61 @@ async def search_alerts_by_host(
         if severity:
             filters.append({"field": "severity", "operator": "in", "value": severity})
 
-        # Step 3: Fetch alerts
-        alert_payload = {
-            "request_data": {
-                "search_from": search_from,
-                "search_to": search_to,
-                "filters": filters,
-            }
-        }
-
-        response_data = await fetcher.send_request("/alerts/get_alerts_multi_events", data=alert_payload)
-
-        # Step 4: Clean up the alerts
-        all_alerts = response_data.get("reply", {}).get("alerts", [])
-
-        # Clean up the alerts
+        # Step 3: Fetch alerts in batches and filter by endpoint_id client-side.
+        # We over-fetch to account for alerts on other endpoints being filtered out.
+        endpoint_id_set = set(endpoint_ids)
         cleaned_alerts = []
-        for alert in all_alerts:
-            filtered_alert = {k: v for k, v in alert.items() if k in _ALERT_KEEP}
-            if isinstance(filtered_alert.get("events"), list):
-                filtered_alert["events"] = [
-                    {k: v for k, v in event.items() if k in _EVENT_KEEP}
-                    for event in filtered_alert["events"][:3]
-                ]
-            cleaned_alerts.append(_strip_empty(filtered_alert))
+        total_scanned = 0
+        total_count = 0
+        batch_size = 100
+        max_scan = 500  # Safety cap to avoid scanning the entire alert database
+
+        while total_scanned < max_scan and len(cleaned_alerts) < search_to:
+            alert_payload = {
+                "request_data": {
+                    "search_from": total_scanned,
+                    "search_to": total_scanned + batch_size,
+                }
+            }
+            if filters:
+                alert_payload["request_data"]["filters"] = filters
+
+            response_data = await fetcher.send_request("/alerts/get_alerts_multi_events", data=alert_payload)
+            batch_alerts = response_data.get("reply", {}).get("alerts", [])
+            total_count = response_data.get("reply", {}).get("total_count", total_count)
+
+            if not batch_alerts:
+                break
+
+            for alert in batch_alerts:
+                if alert.get("endpoint_id") in endpoint_id_set:
+                    filtered_alert = {k: v for k, v in alert.items() if k in _ALERT_KEEP}
+                    if isinstance(filtered_alert.get("events"), list):
+                        filtered_alert["events"] = [
+                            {k: v for k, v in event.items() if k in _EVENT_KEEP}
+                            for event in filtered_alert["events"][:3]
+                        ]
+                    cleaned_alerts.append(_strip_empty(filtered_alert))
+
+            total_scanned += len(batch_alerts)
+
+            # Stop if we've scanned everything
+            if total_scanned >= total_count:
+                break
+
+        # Apply pagination: return only the requested slice
+        paged_alerts = cleaned_alerts[search_from:search_to]
+        total_for_host = len(cleaned_alerts)
 
         result = {
             "hostname": hostname,
             "endpoint_ids": endpoint_ids,
-            "total_alerts_returned": len(cleaned_alerts),
-            "total_alerts_for_host": response_data.get("reply", {}).get("total_count", len(cleaned_alerts)),
-            "alerts": cleaned_alerts,
+            "total_alerts_returned": len(paged_alerts),
+            "total_alerts_for_host": total_for_host,
+            "has_more": total_for_host > search_to,
+            "next_page_from": search_to if total_for_host > search_to else None,
+            "alerts_scanned": total_scanned,
+            "alerts": paged_alerts,
         }
 
         return create_response(data=result)

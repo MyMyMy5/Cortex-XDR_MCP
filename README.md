@@ -4,15 +4,15 @@ An MCP (Model Context Protocol) server that connects AI assistants to Palo Alto 
 
 ## What It Does
 
-This server exposes 30+ Cortex XDR tools via MCP, allowing AI agents to:
+This server exposes 25+ Cortex XDR tools via MCP, allowing AI agents to:
 
 - Investigate incidents and alerts with full event details
 - Hunt for IOCs (domains, IPs, hashes) across the data lake
 - Analyze process trees and causality chains
 - Search file activity, browser connections, and user behavior
-- Collect full browser history from endpoints (with local file export)
+- Investigate browser sessions with correlated history + network timelines, DNS enrichment, and multi-endpoint support
 - Run XQL queries against the XDR data lake
-- Manage incidents (comments, assignments, merges)
+- Manage incidents (comments, assignments, severity changes)
 - Retrieve files from endpoints and scan for malware
 - Retrieve endpoint details, vulnerabilities, and asset inventory
 
@@ -32,15 +32,15 @@ All API timestamps are automatically converted from epoch milliseconds to human-
 ### Custom Components (Python)
 | Tool | Description |
 |------|-------------|
+| `get_investigation_summary` | Single-call consolidated incident overview (incident + case + artifacts + endpoints + IOCs) |
 | `get_incidents` | Retrieve incidents with name-based search |
 | `get_alert_details` | Full alert details with all events (no truncation) |
 | `get_incident_artifacts` | File and network artifacts for an incident |
 | `get_process_tree` | Full causality chain for an alert |
 | `search_alerts_by_host` | All alerts on a specific host |
 | `search_user_activity` | User alert activity (summary + detail modes) |
-| `search_file_activity` | File events (downloads, writes, deletions) |
-| `search_browser_activity` | Browser network connections with proxy detection |
-| `collect_browser_history` | Collect browser history from endpoints via XDR Script Library. Supports `output_file_path` to download the full untruncated dataset to a local file |
+| `search_file_activity` | File events (downloads, writes, deletions) on an endpoint |
+| `investigate_browser_session` | Unified browser investigation — history collection, network correlation, DNS enrichment, multi-endpoint support, and aggregated summaries |
 | `get_exclusions` | Alert exclusion audit records |
 | `merge_cases` | Merge duplicate cases |
 | `update_incident_no_resolve` | Add comments, reassign, change severity |
@@ -151,9 +151,11 @@ src/
 │   ├── fetcher.py                   # API request handler
 │   ├── builtin_components/          # Core tools (cases, issues, endpoints, XQL, threat intel)
 │   │   └── openapi/                 # OpenAPI specs for auto-generated tools
-│   ├── custom_components/           # Extended tools (process trees, file activity, etc.)
+│   ├── custom_components/           # Extended tools (process trees, file activity, browser investigation, etc.)
 │   └── remote_components/           # Remotely managed tools (via update command)
-└── entities/                        # Data models, exceptions, sample responses
+├── entities/                        # Data models, exceptions, sample responses
+tests/
+└── test_browser_session.py          # Property-based tests for browser session correlation engine
 ```
 
 ## Extending

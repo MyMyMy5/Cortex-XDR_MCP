@@ -25,6 +25,10 @@ exclusions.md
 # ── PowerShell error artifacts ──
 $($_.Exception.Response.StatusCode.value__)
 
+# ── Script library files (local development only) ──
+History.py
+History_Script_Library.py
+
 # ── Hypothesis (property-based testing cache) ──
 .hypothesis/
 

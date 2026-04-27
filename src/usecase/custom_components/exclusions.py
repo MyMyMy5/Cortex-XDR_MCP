@@ -1,3 +1,9 @@
+"""Tool: get_exclusions
+
+Retrieve alert exclusion records from the Cortex XDR / XSIAM management audit log.
+Provides visibility into who created exclusions, when, and for which alerts.
+"""
+
 import logging
 from typing import Annotated, Optional
 

@@ -1,3 +1,9 @@
+"""Tool: get_incident_artifacts
+
+Retrieve file artifacts and network artifacts for a specific incident from Cortex XDR.
+Calls the Get Extra Incident Data API for artifact-level overview.
+"""
+
 import logging
 from typing import Annotated
 

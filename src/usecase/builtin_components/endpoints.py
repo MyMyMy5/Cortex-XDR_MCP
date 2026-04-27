@@ -1,3 +1,9 @@
+"""Tool: get_filtered_endpoints
+
+Retrieve endpoints managed by XDR agents with optional filtering.
+Response is auto-trimmed to investigation-relevant fields.
+"""
+
 import logging
 from typing import Annotated, Optional
 

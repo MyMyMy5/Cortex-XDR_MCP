@@ -1,3 +1,9 @@
+"""Tool: run_xql_query
+
+Run XQL queries against the Cortex XDR data lake for custom investigations.
+Supports timeframe parameters and automatic stream fetching for large result sets.
+"""
+
 import asyncio
 import json
 import logging

@@ -1,3 +1,9 @@
+"""Tool: search_user_activity
+
+Search for all alert activity associated with a specific user across all endpoints.
+Supports summary mode (aggregated statistics) and detail mode (paginated alert details).
+"""
+
 import logging
 from typing import Annotated, Optional
 

@@ -1,3 +1,10 @@
+"""Tool: get_alert_details
+
+Retrieve the full details of a single alert including ALL events (no truncation).
+Unlike get_issues which caps events at 3 per alert, this tool returns every event
+for deep-dive forensic analysis.
+"""
+
 import logging
 from typing import Annotated
 

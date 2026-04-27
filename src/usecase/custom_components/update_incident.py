@@ -1,3 +1,12 @@
+"""Incident update tool for Cortex XDR.
+
+Provides two variants controlled by the ALLOW_RESOLVE flag:
+- update_incident_no_resolve (default): comment, reassign, change severity
+- update_incident: adds resolution/status change capability
+
+Only one variant is registered at a time.
+"""
+
 import logging
 from typing import Annotated, Optional
 

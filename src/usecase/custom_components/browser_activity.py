@@ -1,4 +1,6 @@
 """
+DEPRECATED: This tool has been replaced by investigate_browser_session (in browser_session.py).
+
 Tool: search_browser_activity
 
 Search for browser network connections on a specific endpoint to understand
@@ -235,10 +237,18 @@ async def search_browser_activity(
 
 
 class BrowserActivityModule(BaseModule):
-    """Module for searching browser network connections with proxy/location classification."""
+    """Module for searching browser network connections with proxy/location classification.
+
+    Note: The search_browser_activity tool has been replaced by
+    investigate_browser_session (in browser_session.py) which provides a unified
+    interface for both history retrieval and correlated investigation.
+    The helper functions (_classify_connection, _is_internal_ip) are still used
+    by the new tool.
+    """
 
     def register_tools(self):
-        self._add_tool(search_browser_activity)
+        # Tool removed — replaced by investigate_browser_session
+        pass
 
     def register_resources(self):
         pass

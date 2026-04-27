@@ -1,3 +1,10 @@
+"""Tool: get_process_tree
+
+Retrieve the full process execution tree (causality chain) for a specific alert.
+Fetches the alert to extract the causality actor, then queries all PROCESS events
+in the same causality chain via XQL.
+"""
+
 import logging
 from typing import Annotated, Optional, Union
 

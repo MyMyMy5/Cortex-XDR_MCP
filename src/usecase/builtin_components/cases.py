@@ -1,3 +1,9 @@
+"""Tool: get_cases
+
+Retrieve cases from the Cortex platform with optional filtering.
+Supports name_contains for efficient pattern-based searching.
+"""
+
 import json
 import logging
 from typing import Annotated, Optional

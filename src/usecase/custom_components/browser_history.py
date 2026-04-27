@@ -1,4 +1,6 @@
 """
+DEPRECATED: This tool has been replaced by investigate_browser_session (in browser_session.py).
+
 Browser History Collector — runs the History_Script_Library script from the
 XDR Agent Script Library on a target endpoint and returns the results.
 
@@ -491,10 +493,18 @@ async def collect_browser_history(
 
 
 class BrowserHistoryModule(BaseModule):
-    """Module for collecting browser history from endpoints via XDR Script Library."""
+    """Module for collecting browser history from endpoints via XDR Script Library.
+
+    Note: The collect_browser_history tool has been replaced by
+    investigate_browser_session (in browser_session.py) which provides a unified
+    interface for both history retrieval and correlated investigation.
+    The helper functions (_resolve_endpoint, _resolve_script_uid,
+    _run_script_on_endpoint, _download_result_files) are still used by the new tool.
+    """
 
     def register_tools(self):
-        self._add_tool(collect_browser_history)
+        # Tool removed — replaced by investigate_browser_session
+        pass
 
     def register_resources(self):
         pass

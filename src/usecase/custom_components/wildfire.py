@@ -1,3 +1,9 @@
+"""Response action tools for Cortex XDR.
+
+Provides file retrieval and endpoint scanning capabilities.
+Note: quarantine_file exists but is disabled (destructive action).
+"""
+
 import logging
 from typing import Annotated, Optional
 
@@ -137,7 +143,7 @@ async def get_file_retrieval_details(
 
 async def get_action_status(
     ctx: Context,
-    action_id: Annotated[int, Field(description="The action ID to check the status of (from retrieve_file_from_endpoint, quarantine_file, etc.).")],
+    action_id: Annotated[int, Field(description="The action ID to check the status of (from retrieve_file_from_endpoint, scan_endpoints, etc.).")],
 ) -> str:
     """Check the status of a response action (file retrieval, quarantine, scan, etc.).
 
@@ -283,7 +289,10 @@ async def scan_endpoints(
 
 
 class WildFireModule(BaseModule):
-    """Module for file retrieval, quarantine, and scanning via Cortex XDR response actions."""
+    """Module for file retrieval and endpoint scanning via Cortex XDR response actions.
+
+    Note: quarantine_file exists in this module but is disabled (destructive action).
+    """
 
     def register_tools(self):
         self._add_tool(retrieve_file_from_endpoint)

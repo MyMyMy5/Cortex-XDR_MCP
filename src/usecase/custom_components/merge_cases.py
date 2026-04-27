@@ -1,3 +1,9 @@
+"""Tool: merge_cases
+
+Merge one or more source cases into a target case by resolving the source cases
+as 'Resolved - Duplicate Case' with a comment referencing the target.
+"""
+
 import logging
 from typing import Annotated
 

@@ -1,3 +1,9 @@
+"""Tool: get_incidents
+
+Retrieve incidents from the Cortex XDR platform with optional filtering.
+Supports name_contains for efficient pattern-based searching.
+"""
+
 import logging
 from typing import Annotated, Optional
 

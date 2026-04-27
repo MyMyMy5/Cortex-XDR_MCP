@@ -1,3 +1,9 @@
+"""Threat intelligence tools for Cortex XDR.
+
+Provides hash enrichment (enrich_hash) and IOC hunting (search_ioc)
+via XQL queries against the XDR data lake.
+"""
+
 import logging
 from typing import Annotated, Optional, Union
 

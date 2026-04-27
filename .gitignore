@@ -25,6 +25,9 @@ exclusions.md
 # ── PowerShell error artifacts ──
 $($_.Exception.Response.StatusCode.value__)
 
+# ── Hypothesis (property-based testing cache) ──
+.hypothesis/
+
 # ── Python ──
 __pycache__/
 *.py[cod]

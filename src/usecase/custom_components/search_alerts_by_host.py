@@ -1,3 +1,10 @@
+"""Tool: search_alerts_by_host
+
+Search for all alerts on a specific host, optionally filtered by time range and
+severity. Resolves hostname to endpoint_id internally, then fetches and filters
+alerts from the Cortex XDR alerts API.
+"""
+
 import logging
 from typing import Annotated, Optional
 
@@ -82,7 +89,7 @@ async def search_alerts_by_host(
         "Pass as a list, e.g. ['high', 'critical']. Optional — if omitted, returns all severities."
     ))] = None,
     search_from: Annotated[int, Field(description="Pagination start offset. Default 0.", default=0)] = 0,
-    search_to: Annotated[int, Field(description="Pagination end offset. Default 20, max 100.", default=20)] = 20,
+    search_to: Annotated[int, Field(description="Pagination end offset. Default 20.", default=20)] = 20,
 ) -> str:
     """
     Search for all alerts on a specific host, optionally filtered by time range and severity.

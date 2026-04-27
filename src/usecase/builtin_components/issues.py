@@ -1,3 +1,9 @@
+"""Tool: get_issues
+
+Retrieve alerts/issues from the Cortex platform with optional filtering.
+Supports case_id for fetching alerts associated with a specific case.
+"""
+
 import json
 import logging
 from typing import Annotated, Optional

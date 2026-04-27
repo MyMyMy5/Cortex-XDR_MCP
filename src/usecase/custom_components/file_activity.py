@@ -115,6 +115,7 @@ async def search_file_activity(
         timeframe_from: Optional start of search window.
         timeframe_to: Optional end of search window.
         limit: Max results. Default 30, max 50.
+        timeout: Max seconds to wait for query results. Default 30. Increase to 120 for wide timeframe queries.
 
     Returns:
         JSON with matching file events including actor process, file path, hash, and timestamp.
